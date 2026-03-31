@@ -3,7 +3,7 @@ package adjlist
 import "fmt"
 
 // TODO : Correct implementation ✅ (Review logic)
-// Logic : Start with a seed element (mark it pre visited) by putting item in the queue and then
+// Logic : Start with a seed element (mark it pre visited) by putting item in the queue
 // and then start a while loop to pop, add to result and then visit other neighbour nodes
 // and mark them visited and push to queue (if not already visited.)
 // Link to a flow chart.
@@ -14,6 +14,7 @@ func (g2 *Graph2) BFS(start int) []int {
 		start: {},
 	}
 
+	// result slice
 	bfs := []int{}
 
 	// slice as queue has elements which are visited and we need to visit their neighbours
@@ -21,15 +22,18 @@ func (g2 *Graph2) BFS(start int) []int {
 
 	// while - queue is non empty - keep on popping
 	for len(queue) > 0 {
+		// take the front element
 		front := queue[0]
+
+		// reset the queue. (Make slice video.)
 		queue = queue[1:]
 
 		// pop from the front and append to the result.
 		bfs = append(bfs, front)
 
 		// add neighbours to queue
-		for idx, _ := range g2.adjList[front] {
-			v := g2.adjList[front][idx]
+		for idx, _ := range g2.AdjList[front] {
+			v := g2.AdjList[front][idx]
 			if _, ok := visited[v]; !ok {
 				// mark visited
 				visited[v] = struct{}{}
@@ -49,7 +53,7 @@ func (g2 *Graph2) BFS2(start int) []int {
 
 	bfs := []int{}
 
-	// slice as queue has elements which are visited and we need to visit their neighbours
+	// slice as queue has elements which are about to be visited and we need to visit their neighbours
 	queue := []int{start}
 
 	// while - queue is non empty - keep on popping
@@ -60,21 +64,22 @@ func (g2 *Graph2) BFS2(start int) []int {
 		queue = queue[1:]
 
 		// visit - Logically wrong ❌ as u can keep pushing the item other times also
-		//  .. mark visited only when it is popped it can be queue multiple times.
+		//  .. mark visited only when it is popped it can queue multiple times.
 		visited[front] = struct{}{}
 
 		// push to result
 		bfs = append(bfs, front)
 
 		// add neighbours to queue if not already visited
-		neighbours := g2.adjList[front]
+		neighbours := g2.AdjList[front]
 		for idx, _ := range neighbours {
-			v := g2.adjList[front][idx]
+			v := g2.AdjList[front][idx]
 			if _, ok := visited[v]; !ok {
 				// enqueue
 				queue = append(queue, v)
 			}
 		}
+
 		fmt.Println("queue state now is : ", queue, "with front : ", front)
 	}
 

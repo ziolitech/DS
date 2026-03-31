@@ -6,3 +6,8 @@ Rule of Thumb
 Date: 10 Jan
 Need to code:
  - Zig-Zag Traversal.(Make V.)
+ - Boundry Traversal (M.V)
+ - Vertical Order Traversal (understood the concept - dissect, deep dive.)
+ - Top View/Bottom View
+ - Left View/Right View.
+ - IsSymetric Binary Tree?

@@ -9,6 +9,7 @@ func NewGraph3(opts ...GraphOption3) *Graph3 {
 		adjMatrix: [][]int{},
 	}
 
+	// looping over the range of options.
 	for _, opt := range opts {
 		opt(g3)
 	}
