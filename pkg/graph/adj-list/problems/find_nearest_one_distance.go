@@ -1,5 +1,6 @@
 package problems
 
+// Data is a generic type and it encapsulates 3 values
 type Data[T any] struct {
 	x T
 	y T
@@ -25,6 +26,7 @@ func FindNearestOne(input [][]int) [][]int {
 	for i := 0; i < lx; i++ {
 		for j := 0; j < ly; j++ {
 			if input[i][j] == 1 {
+				// distance of 1 to nearest 1 is 0 as it is 1 itself.
 				queue = append(queue, Data[int]{i, j, 0})
 				visited[i][j] = 1
 			}
@@ -33,7 +35,8 @@ func FindNearestOne(input [][]int) [][]int {
 
 	for len(queue) > 0 {
 		front := queue[0]
-		// deque
+
+		// deque.
 		queue = queue[1:]
 
 		// update the distance matrix
@@ -52,6 +55,7 @@ func FindNearestOne(input [][]int) [][]int {
 			nCol := front.y + moves[i][1]
 
 			// indicates move within the bound
+			// lx is the length of the row, ly is the length of the column.
 			if ((nRow) >= 0 && (nRow < lx)) && ((nCol) >= 0 && ((nCol) < ly)) {
 				// check if not visited
 				if visited[nRow][nCol] == 0 {
