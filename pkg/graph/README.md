@@ -304,9 +304,10 @@ Algo:
   the direct path via other nodes. This algo has n*n*n complexity.
  - Makes use of the concept from the Dynamic programming where we leverage the precomputed values.
  min(d[i][k] +d[k][j]) for calc the distance for d[i][j]
+  - Pen-paper cand.
 
 12. Find the city with smallest no of neighbours at a threshold distance. - (Application of Floyd warshall.) 
- - TODO - to practice.
+ - Basically .. here we need to form the 2D grid using the floyd warshall algo first ..to know the cost to reach from u->v via k node.
 
 13. Minimum Spanning Tree
   - comes the prim's algo underneath it.
@@ -392,3 +393,4 @@ Algo:
  Acc to Abdul sir Vid (https://www.youtube.com/watch?v=jFZsDDB0-vo) - if u vertext is parent and v is child .. d[u] >= u[v]
  if L[v] >= d[u]{L stands for lowest and d stands for discovery number} this indicates that child can not discover nodes parent if given u node is removed, then u will be an articulation point. Above is valid for all the nodes except root.
   - Root works differently as it can have either 1 child or more child on the basis of it will become articulation point.`
+
