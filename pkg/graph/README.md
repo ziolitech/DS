@@ -3,7 +3,9 @@
  - Adj Matrix
  - Adj List
  - Edge Set - we are given set of edges {slice of pairs} and using that determine if src is connected to the destination.
+   - In this representation, if there is vertex which is not part of any edge that will have to represented as somewhat differently i believe.
  - Compositional Representation of Graph. (Ref : https://medium.com/@snassr/graphs-with-go-golang-part-i-3e0f9392c294)
+   - Here we leverage pointers to store the graph.
 
 Tasks:
  - Create Graph Creation Code (✅)
@@ -244,14 +246,18 @@ Algo:
 
 4. Print shortest path Djikshtra Algo:
  - Hint : Just remember from where you are coming from.
- - In this problem we simply, have to maintain one distance array and another parent array to store the options where we find that if there is a better path exists from source to that node then update the distance plus also update the parent.6
+ - In this problem we simply, have to maintain one distance array and another parent array to store the options where we find that if there is a better path exists from source to that node then update the distance plus also update the parent array.
 
 
 5. Shortest Distance in a Binary Maze.
  - Here we create a 2D distance array to mark the source distance as 0 and rest cell we can keep as int_max(infinity)
  - Also, we can simply use queue with Djikshtra here as traversal is in 4 directions with a unit distance. [So, we need not use a PQ here.]
  - Can we simply use BFS algo in 4 direction - I believe yes .. as it also acheives that with simple queue? - Acc to GPT BFS is preferred and has less time complexity.
+   - It is BFS only as u are navigating the neighbours .. only thing is .. u are inserting into the queue only when u find a better option.
+  [Need to think deeper on how BFS TC would be compared with Djik TC]
 
+--------------------------------------------------------------------------------
+This needs special attention.
 
 6. Cheapest flights within K stops [IMP Problem - Require a deep dive]:
  - There are 2 ways, I saw people have solved it .. need to deep dive to understand it better.
@@ -261,25 +267,37 @@ Algo:
  If we use hops/stops as the first element in the pQ then we do not need pQ specifically as we are
  moving in bfs fashion .. one hop/stop at a time and in that way maintaining a counter for the min
  distance.
+[what if we tweak to get the Costliest flight within K stops]
 
 
  In the other Algo, by Shiran in this(https://www.youtube.com/playlist?list=PLT3bGNUOvbdIIX2JSC-57103xetAI4Cl_)
   series, she uses 2 arrays - 1. to maintain the distance 2. to maintain the hops.
  - in this she uses the priority queue with nodeData as {distance, node, stops} only but pushes
- into the pQ if we find a better distance for that node or we find lesser number of hops for that node.
+ into the pQ if we find a better distance for that node or we find lesser number of hops for that node(even if the cost/dist is more).
  [If lesser number of hops are found - we dont update the distance as we still want to return the
  cheapest/lesser distance].
+ [More iterations than the strivers approach]
 
 - In mazhar video, he has explained how simply we can perform the bfs ..and solve this question by visiting each neighbour path. (https://www.youtube.com/watch?v=VmUpydhNmuw). But here number of iterations will be more as we are exploring each path.
 
+ToDo: Need deep dive and analysis of the time complexity.
+
+--------------------------------------------------------------------------------
 
 7. Network Delay time - Attempt it.
+ - Based on Dij, need to find the max of the signal time to reach to each node. Simply, we can apply Dij and calc the max of the distance
+ array having all the min time to each node.
 
 8. Minimum multiplications to reach the end.
- - Simple Djikshtra .. but just need to take care of the modulo condition and array containing elements upto (modulo_value -1) .. i.e if it is 
+ - Simple Djikshtra .. but just need to take care of the modulo condition and array containing elements upto (modulo_value -1) .. i.e if 
+mod is 100000 then max val of node will be 100000-1 and we perfrom Dij {steps, node} and use pQ.
 
-9. No of ways to arrive at destination.
- - Here we need to consider combination involving subpaths as well .. as u would be coming from various different directions.
+9. No of ways to arrive at destination (all the shortest path to reach destination).
+ - Basically we need to find all the paths taking the shortest distance to reach the dest.
+ - Here we need to consider combination involving subpaths as well .. as u would be coming
+  from various different directions and finally funneling into the same pipe.
+- PreReq : We perform the Dij algo and keep a dist array and the ways array
+[IMP Question : Perform the dry run.]
 
 10. Bellman Ford Algorithm [single source shortest path algo.]: 
   - Applicable for DG (directed Graph). 
@@ -288,8 +306,8 @@ Algo:
 
   - Here we need to relax all the edges N-1 times sequentially.
     - Why N-1 iterations ? : this is because in a graph with largest path in a graph with N vertices is N-1 edges and 
-    as edges can be given in any order, and if the order is given such that in a iteration we can just calculate 1 value of shortest path as for
-    just one value it will be given.
+    as edges can be given in any order, and if the order is given such that in a iteration we can just calculate 1 value 
+    of shortest path as for just one value it will be given.
      
   - Check for each edge ...
   - Does not work with Graph having a negative cycle.
@@ -298,12 +316,13 @@ Algo:
 
 11. Floyd Warshall Algo. ( Multi source shortest path algorithm)
  - Multi source shortest path problem .. (Find the shortest distance from a given node to every other node.)
- - Concept of via a subpath .. to determine the shortest path.
+ - IMP : Concept of via a subpath .. to determine the shortest path.
  - Helps detect negative cycle as well .
- - Intuition : Check for each node for the presence of better path via another node ..as there can be path which is is better than
-  the direct path via other nodes. This algo has n*n*n complexity.
- - Makes use of the concept from the Dynamic programming where we leverage the precomputed values.
- min(d[i][k] +d[k][j]) for calc the distance for d[i][j]
+ - Intuition : Check for each node for the presence of better path via another node ..
+ as there can be path which is is better than the direct path via other nodes.
+   This algo has n*n*n complexity.
+ - Makes use of the concept from the Dynamic programming where we leverage the
+  precomputed values. min(d[i][k] +d[k][j]) for calc the distance for d[i][j]
   - Pen-paper cand.
 
 12. Find the city with smallest no of neighbours at a threshold distance. - (Application of Floyd warshall.) 
@@ -313,60 +332,111 @@ Algo:
   - comes the prim's algo underneath it.
   - A tree within the graph which connects each and every node and has the minimum weight to get connected.
   Intuition - It is a subgraph basically a tree without cycle .. to connect every node with min possible cost.
+   - connect all the nodes minimally(minimum number of edges ?) such that .. it has the min cost.
 
-14. Prim's Algo
- - Pre-req : we take a min-Heap and a visited array and MST result array. {weight, node, parent} in the pQ starting with the first element pushed and market visited.
- - then we start exploring the neighbours if they are not visited and then push it to the PQ. While again taking the min out put it in the MST array and add it in the MST sum. Repeat the process.
+14. Prim's Algo: Greedy way me edge weight lete raho and add it to the mst sum
+ - Intuition: to reach a node .. we always take the minimum distance in greedy way .. min heap
+ will help us take out the node in O(1) time.
+  - we can start from any source node. Once we have taken out the node we add the edge weight to the
+  mstSum var (for the source it will be 0 anyways) and then also mark it as visited .. 
+  we need the visited array so that we dont consider the other path reaching this node as they are higher(they will also be in the queue)
+  In a way, we are always taking the local minima by always taking the minimum value.
+  [Mazhar's video is good .. but can be better with intuition.]
+
+ - Pre-req : we take a min-Heap and a visited array and MST result array.
+  {weight, node, parent} in the pQ starting with the first element pushed and
+   mark as visited. We don't need parent in the variable if we are not asked to get the MST tree or
+   just the sum is asked.
+ - then we start exploring the neighbours if they are not visited and then push it 
+ to the PQ.
+  While again taking the min weight node out put it in the MST array and add it in the MST sum. Repeat the process.
+
 
 15. Disjoint Set Data Structure. (DSU)
- - This is a custom data structure (backed by 2 array - one to store parent for a given node and other to store the rank for a given node. - Acc. to abdul sir.. can be implement using linked list as well.)
+ - This is a custom data structure (backed by 2 array - one to store parent for a given node and other to store the rank for a given node. 
+ - Acc. to abdul sir.. can be implement using linked list as well.)
   which exposes 2 methods - 1. To do union of two disjoint set 2. Find ultimate common parent.
  - Here we dynamically form the data structure when edges are given in any order we start forming components using the union operation.
-   - union has 2 cases either their parent is same which means they are already connected in the component or they are not connected .. in that case parent[u] and parent[v] we need to check which one has got higher rank or weight.. one with higher weight/rank will become the parent of the other.
+   - union has 2 cases either their parent is same which means they are already connected in the component 
+   or they are not connected .. in that case parent[u] and parent[v] we need to check which one has got higher 
+   rank or weight.. one with higher weight/rank will become the parent of the other.
+
+   Why do we need DSU Data structure ? Main intuition behind that ?
+    - ChatGPT and Claude query check ...
 
 
 16. Krushkal's Algo to find the MST using the disjoint data structure. 
- - Here goal is to find the MST .. given the number of edges.
+ - Here goal is to find the MST (least cost to connect all or n vertices) .. given the number of edges.
  - Here we first sort the edges by weight .. {weight, u , v} where u is the start node of edge and v is the end node of the edge.
- - and then we start forming the MST by taking the least weight edge and ignore the edge with u,v belonging the MST (or the same component.)4
+ - and then we start forming the MST by taking the least weight edge and ignore the edge with u,v belonging to 
+ the same component or having the same parent.
  - in this way we create the MST.
+  [Explain Clearly - Not clear in above.]
+ What is the Intuition ? :
+  -  To form the MST our goal is to connect the vertices in such a way that sum of cost of connection is least.
+  - For that reason we are again going bit greedy .. where we sort the edges in ascending order
+  to find the least weight first and then connect u -> v if they are not connected [To know
+  if they are connecred or not we use the DSU func findUltParent ..If they are not connected
+  then we perform the union to connect them ]
+  - Once they get connected .. any higher cost edges to connect them again will be ignored
+  using the DSU findUltParent func.
 
 
-17. No of provinces using disjoint set data structure.
- - This can be solved using D set data stricture ... we need to make union by edges as they are there and then we need to count - how many nodes come with same parent [considering every node has a parent to itself] which indicates total number of parents or the bosses.
+17. No of provinces using disjoint set data structure. [Return the unique ultimate parents.]
+ - This can be solved using DSU data structure ... we need to make union by edges
+  as they are there and then we need to count - how many nodes have the parent as themselves
+  [considering every node has a parent to itself] which actually gives the ultimate bosses which
+  could not be merged with any other component. [Need better explanation]
 
-18. No of operations to make the network connected.
- - Prob : to move the extra edges from a component to use them as a supporting edge to connect other components.
+18. No of operations to make the network connected. [jitni edges jyada hongi greater than what is needed for the MST ... that will
+define our answer.]
+ - Prob : to move the extra edges from a component to use them as a supporting edge
+  to connect other components. (you know that as per MST minimally we need V-1 edges 
+  to connect V nodes).
  - In this problem .. we need to find the extra edges from a given component.
- - Min edges required to connect n components is = n-1.
- - if extra edges >= nC-1 this implies that ⟹ connecting components is possible.
+ - Min edges required to connect n components is = (n-1) -> As per MST.
+ - Main Intuition : If extra edges >= nC-1 this implies that ⟹ connecting components
+  is possible.
 
 
-19. Account Merge :
-- in this problem .. we are given .. accounts set (containing mail ids) .. where ... in some set .. duplicate mailID exist ..
- and we need to .. merge the accout such that .. account set with duplicate or repeated mailIDs get merged to each other.
- - First we build a reverse map of the account id to the set they belong to ...we number the set from 0.. meaning we index them.
+19. Account Merge: (mailIDs in different set repeat hoti hai... unko merge karna hai .. reverse set ya map leke)
+- In this problem .. we are given .. accounts set (containing mail ids) .. where ... in some set .. 
+duplicate mailID exist ..
+ and we need to .. merge the account such that .. account set with duplicate or 
+ repeated mailIDs get merged to each other.
+ - First we build a reverse map of the account id (as a string. (K,V) - key is mailID string and val is the index key) to the set they belong to ...we number the set from 0.. meaning we index them.
  - Basically we form the emailId -> Index mapping and then .. while doing this if we find a mailID belonging to different set then we link this set(index) with the other set as parent.
- In the 2nd step, we can go through each .. component/set and then see where does the element belong to ..as a ultimate parent .. if the 2 guys .. have the same element parent .. then we merge the set.
+ In the 2nd step, we can go through each .. mail ID in the set/map - prev built and then see where does the element belong to ..as a ultimate parent .. if the 2 guys .. have the same element parent .. then we merge and create the new set K = index and val = list of mailIds.
 
-20. Number of Islands - II - Online queries
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+20. Number of Islands - II - Online queries (Dynamically changing edges either union and find operation se ...#DSU)
  - In this problem, we need to return the total distinct component at each step and form the answer to that as a list.
  - Here, approach involves first .. increasing the component count by considering the new guy as a isolated component and when we check if it is surrounder by prev visited/or counted component then we reduce the component count.
- - Also, we need to learn to identify each cell in a matrix as a unique number to consider them as node .. by that unique number we can get the coordinate cell_no = (row_num) * row_size + col_num 
+ - Main Concept (IMP) : Also, we need to learn to identify each cell in a matrix as a unique number to consider them as node ( as DSU works with the node concept) .. by that unique number we can get the coordinate cell_no = (row_num) * row_size(no_of_col) + col_num 
 
 
-21.  Making a Large Island - DSU.
- - Here we are given a matrix and we can convert 0 -> 1 to form the biggest island.. Acc to understanding .. 
- - Step1 : we form the disjoint connected components and number them as a single number fro the coordinate. Disjoint set will form the connected component and will share the unique ultimate single parent. Also, disjoint set can be represented as the flattened version or path compressed version where all the nodes are directly connected to the ultimate parent.
+21.  Making a Large Island - DSU. (set of 1 connected ko convert karo DSU me .. by calling union and then step 2 me 0 ko 1 me convert karke .. agal bagal ke component dekho jisse combine ho sake.)
+ - Here we are given a matrix and we can convert 0 -> 1 to form the biggest island.. Acc to understanding ...
+ As we are changing something in exisiting which can change the size of the component .. in that way we are dynamically changing the size of the components.
+
+ - Step1 : we form the disjoint connected components and number them as a single number from the coordinate (row_num * col_size + col_num). 
+ Disjoint set will form the connected component and will share the unique ultimate single parent. 
+ Also, disjoint set can be represented as the flattened version or path compressed version where all the nodes are directly connected to the ultimate parent.
+
  - Step2 : Try converting every 0 -> 1 one by one and see if they are able to form the larger connected component/island.
-  - Check left -> if there is cell(numbered which has 1) and find its ultimate parent and gets its size (as we have size and rank present in a DSU) - add totals from left, right top and botton (Edge case - remember to not count the same connected component twice or more .. this can be done by maintaining unique parents in a set data structure)
+  - Check left -> if there is cell(numbered which has 1) and find its ultimate parent and gets its size (as we have size and rank present in a DSU) - add totals from left, right top and botton (Edge case - remember to not count the same connected component twice or more .. this can be done by maintaining unique parents in a set data structure).
+
 
 22. Most stones removed with same row and column :
  - Crux -> Identify the connected components as for 1 connected components all the elements/nodes can be removed except 1.
   - so, max(stones which can be removed) = number of nodes - (no of total connected components)
-
-- Imp : Entire row is treated as Node. (All the elements in that row is treated as part of the same node). 
- - Also a column is also treated as a node and mapped with entire order of node. In his way, we go through each element in the matrix and see which row and column it is part of and then similarly we establish connections between nodes to form the disjoint set which ultimately gives us the unique ultimate parents.
+- Imp : Entire row is treated as Node. (All the elements in that row is treated as part of the same node - Very out of box thinking model).  
+ - Also a column is also treated as a node and mapped with entire order of node. 
+ Main Point : Presence of a node in a certain (row, col) establishes the conn between that row and col.
+ In his way, we go through each element in the matrix and see which row and column it is part of and then similarly we establish connections between nodes to form the disjoint set which ultimately gives us the unique ultimate parents.
 
 
  23. Strongly Connected Components - Kosaraju's Algorithm
@@ -375,22 +445,54 @@ Algo:
   - By definition, this component can be defined as the component where each node can reach every other node even if we reverse the edges in the graph or we take the normal edges.
  - We acheive this in 3 steps.
    - Perform the DFS in the graph and store the last finished nodes in a stack to keep track of the nodes which finished first vs last.
-   - Reverse the graph.
+   - Reverse the graph (with the help of adj list or adj matrix.)
    - Go through the stack to take last finished elements first .. basically these indicate the start of the graph even after Graph reversal we start from the correct element in the Graph.
-   - DFS will let us detect the strongly connected components.
+   - DFS will let us detect the strongly connected components. 
+   - Why do we need SCC ? - This helps in solving problem in easier way as inside the SCC we can just be going in a loop. [Read more here : https://chatgpt.com/share/6a0a7a59-582c-83ec-b9c6-66ffa4b2d289]
 
 
-24. Finding Bridges in the Graph - Tarjan's Algo - using insert time and (min adj time except parent).
+
+24. Finding Bridges in the Graph - Tarjan's Algo - using insert time (time while inserting in to the Graph using DFS matters)
+ and (min adj time except parent ........called low link val as well ?.......).
+ - what are bridges ?
+  -
  - Here we need to detect - how many bridges exist in a graph.
    - For this we perform DFS and keep noting down their insertion time/step along with min adj time.
     - This min adj helps to know that if parent is reachable from the subtree even if the edge to the parent(or caller in the DFS path) is removed to see the bridge applicability. [Basically, 2 concepts named - insertion time and lowest time of insertion time.]
-
      - If reachable then it is not a bridge else it is a bridge.
 
-25. Articulation Point.
- - Basically an algo to detect the single point of failure in a Graph. We perform a DFS and keep time of visit of a node in the graph and check the lowest adj number except parent and visited nodes.
- - Unlike with Bridge .. here the vertex itself is removed so we need to see if the parent of node (lets say node is x) to be removed is reachable by the children node. {parent[node] is reachable by the child[node] in that case it is node a articulation point else it is.}
- Acc to Abdul sir Vid (https://www.youtube.com/watch?v=jFZsDDB0-vo) - if u vertext is parent and v is child .. d[u] >= u[v]
- if L[v] >= d[u]{L stands for lowest and d stands for discovery number} this indicates that child can not discover nodes parent if given u node is removed, then u will be an articulation point. Above is valid for all the nodes except root.
-  - Root works differently as it can have either 1 child or more child on the basis of it will become articulation point.`
+ - IMP : .. while backtracking we check if our child can give us any low num which is lower than mine, in that case we borrow that or leverage that.
+   - It is called low link value.
+    - I want to know if I can go above my parent thorugh my child(neighbor) ‘v’
 
+ - Analogy to understand : एक तरह से, अपने पिता से यह कहना कि... मैं दादा या परदादा से संपर्क करके आपसे काम करवा लूंगा। toh apse sampark tootne (ya apke gussa hone pe bhi ... ) pe bhi kaam toh hota rahega.
+
+ Real Usage:
+ In network topologies or road grids, back edges are used in algorithms (such as Tarjan's or Hopcroft-Tarjan) to determine weak points or "bridges". If a node has an alternate path (back edge) to an ancestor, a primary path failure won't disconnect the network.
+
+ Further Read : Types of edges
+ https://www.geeksforgeeks.org/dsa/tree-back-edge-and-cross-edges-in-dfs-of-graph/
+
+
+25. Articulation Point.
+ - Basically an algo to detect the single point of failure in a Graph. We perform a DFS and keep time of visit of a node in the graph and check the lowest adj number except parent and visited nodes (why not visited nodes ?).
+ - Unlike with Bridge .. here the vertex itself is removed so we need to see if the parent of node (lets say node is x supposed to be removed) to be removed is reachable by the children node. {parent[node] is reachable by the child[node] in that case it is not an articulation point else it is.}
+ Acc to Abdul sir Vid (https://www.youtube.com/watch?v=jFZsDDB0-vo) - if u vertext is parent and v is child.
+ if L[v] >= d[u] {L stands for lowest and d stands for discovery number} this indicates that child can not discover nodes parent if given u node is removed, then u will be an articulation point.
+  - Equality in the condition means that even if it is equal ..we can reach as you can reach parent but not parent's ancestor. Matlab.. u can reach father lekin dada ji and further baat nai ho payegi.
+  Above is valid for all the nodes except root.
+  - Root works differently as it can have either 1 child or more child on the basis of it will become articulation point.`
+   - if one child then .. removing this .. maintains the same number of comp which is 1.
+   - if 2 or more then it means that it can make >=2 number of components.
+
+  
+Here while doing the backtracking, we don't take take the low of node which is visited rather we take the first discovert time of that node ?
+ - Why ? : cause once the A.P is removed u wont be able to reach to other nodes via A.P
+ - Hence we just take the discovery time of 2 as lowest.
+
+Read Usage: An articulation point (or cut vertex) is a critical node in an undirected connected graph. If this vertex and its attached edges are removed, the graph splits into two or more disconnected components. These points represent critical vulnerabilities in a network, such as a major router in a computer system or a main transfer hub in transit routes
+
+
+Important Problems:
+ - maximize money stolen via a path while given the time restriction.
+  - Its the kind of the orienteering problem .. (Read more about it.)

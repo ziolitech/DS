@@ -1,42 +1,40 @@
 package main
 
 import (
-	"fmt"
-
 	binary_tree "github.com/craftizmv/DS/pkg/tree/binary-tree"
-	"github.com/craftizmv/DS/pkg/tree/problems/medium"
+	"github.com/craftizmv/DS/pkg/tree/binary-tree/traversals"
 )
 
 // morris traversal
 func main() {
-	root := &medium.Node{
-		Data: 1,
-	}
-	root.Left = &medium.Node{
-		Data: 2,
-	}
-	root.Right = &medium.Node{
-		Data: 6,
-	}
-	root.Right.Left = &medium.Node{
-		Data: 9,
-	}
-	root.Right.Right = &medium.Node{
-		Data: 7,
-	}
+	// root := &medium.Node{
+	// 	Data: 1,
+	// }
+	// root.Left = &medium.Node{
+	// 	Data: 2,
+	// }
+	// root.Right = &medium.Node{
+	// 	Data: 6,
+	// }
+	// root.Right.Left = &medium.Node{
+	// 	Data: 9,
+	// }
+	// root.Right.Right = &medium.Node{
+	// 	Data: 7,
+	// }
 
-	root.Left.Left = &medium.Node{
-		Data: 3,
-	}
-	root.Left.Right = &medium.Node{
-		Data: 4,
-	}
-	root.Left.Right.Left = &medium.Node{
-		Data: 8,
-	}
-	root.Left.Right.Right = &medium.Node{
-		Data: 5,
-	}
+	// root.Left.Left = &medium.Node{
+	// 	Data: 3,
+	// }
+	// root.Left.Right = &medium.Node{
+	// 	Data: 4,
+	// }
+	// root.Left.Right.Left = &medium.Node{
+	// 	Data: 8,
+	// }
+	// root.Left.Right.Right = &medium.Node{
+	// 	Data: 5,
+	// }
 
 	// bt := medium.NewBinaryTree(root)
 	//err := bt.MorrisInOrderTraversal(root)
@@ -73,8 +71,43 @@ func main() {
 	// bt.MaxPathValueSum(root, &maxi)
 	// fmt.Println("Max Path Value Sum : ", maxi)
 
-	fmt.Println("IsIdentical : ", medium.IsIdentical(root, root.Right))
+	// fmt.Println("IsIdentical : ", medium.IsIdentical(root, root.Right))
+	root := getGenericNode()
+	traversals.PreInPostTraversal(root)
 
+}
+
+func getGenericNode[T int]() *binary_tree.GNode[T] {
+	root := &binary_tree.GNode[T]{
+		Data: 1,
+	}
+	root.Left = &binary_tree.GNode[T]{
+		Data: 2,
+	}
+	root.Right = &binary_tree.GNode[T]{
+		Data: 6,
+	}
+	root.Right.Left = &binary_tree.GNode[T]{
+		Data: 9,
+	}
+	root.Right.Right = &binary_tree.GNode[T]{
+		Data: 7,
+	}
+
+	root.Left.Left = &binary_tree.GNode[T]{
+		Data: 3,
+	}
+	root.Left.Right = &binary_tree.GNode[T]{
+		Data: 4,
+	}
+	root.Left.Right.Left = &binary_tree.GNode[T]{
+		Data: 8,
+	}
+	root.Left.Right.Right = &binary_tree.GNode[T]{
+		Data: 5,
+	}
+
+	return root
 }
 
 func sampleSkewTree() (*binary_tree.BinaryTree, *binary_tree.Node) {

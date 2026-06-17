@@ -8,11 +8,17 @@ import (
 	"github.com/lossdev/stack"
 )
 
-// Node : TODO - make it generic with golang
 type Node struct {
 	Data  int64
 	Left  *Node
 	Right *Node
+}
+
+// GNode - Represent the generic node.
+type GNode[T any] struct {
+	Data  T
+	Left  *GNode[T]
+	Right *GNode[T]
 }
 
 type BinaryTree struct {
