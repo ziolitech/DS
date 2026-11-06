@@ -162,6 +162,7 @@ func (bt *BinaryTree) DFSPreOrderStack(currentNode *Node) {
 	}
 
 	st := stack.NewGenericStack()
+	// seed
 	st.Push(currentNode)
 
 	for st.Size() > 0 {
@@ -316,7 +317,7 @@ func (bt *BinaryTree) MaxDepth(root *Node) int {
 	}
 
 	return 1 + max(bt.MaxDepth(root.Left), bt.MaxDepth(root.Right))
-}
+}ve
 
 // IsBalancedTree - Checks if the tree is balanced or not.
 // TC : O(N)

@@ -325,6 +325,7 @@ mod is 100000 then max val of node will be 100000-1 and we perfrom Dij {steps, n
   precomputed values. min(d[i][k] +d[k][j]) for calc the distance for d[i][j]
   - Pen-paper cand.
 
+
 12. Find the city with smallest no of neighbours at a threshold distance. - (Application of Floyd warshall.) 
  - Basically .. here we need to form the 2D grid using the floyd warshall algo first ..to know the cost to reach from u->v via k node.
 
