@@ -5,6 +5,11 @@ package pairs
 // of target is present or not.
 // a[i]%k + a[j]%k == 0 => Means that sum should be 0 or divisible by k
 
+// IMP Note : if we just use a hashmap without storing the frequency, we will
+// be missing out if multiple numbers exists to form a pair with on the left hand side.
+
+// SC : min(O(N),O(K)), TC = O(N) as we use a running map to check pairs
+
 func countPairsDivisibleByK(arr []int, k int) int {
 	nMap := map[int]struct{}{}
 	count := 0

@@ -16,6 +16,13 @@ func Test_countPairsDivisibleByK(t *testing.T) {
 			3,
 			2,
 		},
+		{
+			// This test case fails if we don't consider frequency.
+			"Check if the pair exists with difference K",
+			[]int{3, 6, 9}, // (3,6), (3,9), (6,9)
+			3,
+			3,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
