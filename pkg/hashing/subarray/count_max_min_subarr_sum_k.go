@@ -42,7 +42,7 @@ func findMaxMinSubarrSum_K(input []int, k int) (int, int) {
 			// we have just single element in the given input array and K equal that element.
 			// idx found would be -1 in that case and length will be 1 and {length(1) < smallest(-1)}
 			// would turn out to be false. So, we need to add a special condition to check if idx == -1
-			if idx == -1 || length < smallest {
+			if smallest == -1 || length < smallest {
 				smallest = length
 			}
 		}
