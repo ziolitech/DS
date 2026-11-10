@@ -1,4 +1,4 @@
-package pairs
+package subarray
 
 // Given an array find the max and min length of the subarray which has sum as K
 // Think 💡 : Did you think about the edge case ? array just having one element and

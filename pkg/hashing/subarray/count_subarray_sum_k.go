@@ -1,4 +1,4 @@
-package pairs
+package subarray
 
 // # IMP
 // Given an array, cout the number of subarrays present with sum as k.

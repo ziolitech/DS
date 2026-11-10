@@ -1,9 +1,7 @@
-package pairs_test
+package subarray
 
 import (
 	"testing"
-
-	"github.com/craftizmv/DS/pkg/hashing/pairs"
 )
 
 func TestCountSubarraysWith_K_Sum(t *testing.T) {
@@ -35,7 +33,7 @@ func TestCountSubarraysWith_K_Sum(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := pairs.CountSubarraysWith_K_Sum(tt.arr, tt.k)
+			got := CountSubarraysWith_K_Sum(tt.arr, tt.k)
 			if got != tt.want {
 				t.Errorf("CountSubarraysWith_K_Sum() = %v, want %v", got, tt.want)
 			}
