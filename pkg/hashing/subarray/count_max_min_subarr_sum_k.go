@@ -39,9 +39,10 @@ func findMaxMinSubarrSum_K(input []int, k int) (int, int) {
 		if idx, ok := latest[needed]; ok {
 			length := i - idx
 			// IMP (Edge cond) : Below condition will fail when
-			// we have just single element in the given input array and K equal that element.
-			// idx found would be -1 in that case and length will be 1 and {length(1) < smallest(-1)}
-			// would turn out to be false. So, we need to add a special condition to check if idx == -1
+			// we have just single element in the given input array or we have subarray starting from index 0
+			// and K equal that subarray. smallest would be found to be -1(unset) in that case and
+			// length will be 1 and {length(1) < smallest(-1)} would turn out to be false.
+			//  So, we need to add a special condition to check if smallest == -1.
 			if smallest == -1 || length < smallest {
 				smallest = length
 			}
