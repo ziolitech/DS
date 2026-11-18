@@ -1,0 +1,1 @@
+- Deals with finding a single element out of array based on a condition.

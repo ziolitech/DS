@@ -60,3 +60,33 @@ func reduceHeightOfPile(input []int) int {
 	return operations
 
 }
+
+// Break down the implementation:
+// Operation	Complexity	Explanation
+// Build frequency map	O(n) average	Visit every pile once
+// Extract distinct heights	O(k)	Visit frequency map
+// Sort distinct heights	O(k log k)	Sort only unique heights
+// Calculate operations	O(k)	Iterate distinct heights
+
+// Therefore:
+// \[
+// T(n,k)=O(n)+O(k)+O(klogk)+O(k)
+// \]
+
+// Ignoring lower-order terms:
+//
+// O(n+klog k)
+//
+
+// Space complexity:
+//
+// O(k)
+//
+
+// This is particularly useful when there are many duplicate heights.
+
+// For example:
+// n = 1,000,000
+// k = 10
+
+// You only sort 10 distinct heights rather than one million individual values.
